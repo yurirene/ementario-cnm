@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArquivoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +21,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/users', [App\Http\Controllers\HomeController::class, 'usuarios'])->name('usuarios');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/users', [App\Http\Controllers\HomeController::class, 'usuarios'])->name('usuarios');
+
+    Route::resource('/arquivos', ArquivoController::class)->names('arquivos');
+
+});
+
